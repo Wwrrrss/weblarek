@@ -17,6 +17,7 @@ export class Catalog {
     }
 
     getProductById(id: string) {
+        console.log(this.productList)
         return this.productList.find(e => e.id === id)
     }
 
