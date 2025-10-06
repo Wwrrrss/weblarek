@@ -30,3 +30,10 @@ export interface IOrder {
     total: number,
     items: string[]
 }
+
+export interface IData {
+    payment?: TPayment;
+    address?: string;
+    email?: string;
+    phone?: string
+}

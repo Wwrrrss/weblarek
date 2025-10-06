@@ -1,4 +1,4 @@
-import { IBuyer, TPayment } from "../../types/index.ts";
+import { IBuyer, IData } from "../../types/index.ts";
 
 export class Buyer {
     public buyerData: IBuyer
@@ -7,7 +7,7 @@ export class Buyer {
         this.buyerData = buyerData
     }
 
-    saveData(newData: {payment?: TPayment; address?: string; email?: string; phone?: string }): void {
+    saveData(newData: IData): void {
         this.buyerData = {
             ...this.buyerData,
             ...newData
@@ -28,7 +28,7 @@ export class Buyer {
     }
 
     isValid() {
-        let errorObj: {
+        const errorObj: {
             address?: string,
             email?: string,
             phone?: string,
