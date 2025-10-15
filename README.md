@@ -190,3 +190,83 @@ IProduct
 Методы:
 `getProducts ()` - получение товаров
 `post (data: IOrder)` - отправление товаров на сервис
+
+### Слой Представления (View)
+
+1. Класс Header
+    Поля:
+        `countElement: HTMLElement` - счетчик товаров в корзине
+        `cartButton: HTMLButtonElement` - корзина
+    Методы:
+        `setCounter(value: number)` - сеттер значения счетчика товаров
+
+2. Класс Catalog
+    Поля:
+        `main: HTMLElement` - главная страница с товарами
+    Методы:
+        `setCatalog(items: HTMLElement[])` - сеттер товаров
+
+3. Класс Modal
+    Поля:
+        `container: HTMLElement` - модальное окно
+        `closeButton: HTMLButtonElement` - кнопка закрытия окна
+    Методы:
+        `setContent(el: HTMLElement)` - добавление контента
+
+
+Переиспользуемые сущности:
+
+1. Формы
+
+Родительский класс Form
+    Поля:
+    Методы:
+        `fillForm` - заполнение
+        `isValid()` - валидация
+        `change(value)` - изменение значения поля
+
+    Класс OrderForm
+        Поля:
+            `paymentType: IPayment` - способ оплаты
+            `address: string` - адрес доставки
+        Методы:
+
+    Класс ContactsForm
+        Поля:
+            `phone: string`
+            `email: string`
+        Методы:
+
+
+2. Карточки товаров
+
+Родительский класс Card
+    Поля:
+        `title: string`
+        `price:`
+    Методы:
+
+
+    Класс CardInCatalog 
+        Поля:
+            `image: string`
+            `category: string`
+            `description: string`
+        Методы:
+            `openModal()` - открытие модального окна
+
+    Класс CardPreview
+        Поля
+            `image: string`
+            `category: string`
+            `description: string`
+            `button: HTMLButtonElement`
+        Методы:
+            `addToCart()` - добавление товара в корзину
+
+    Класс CardInCart
+        Поля:
+            `index`  ???
+            `button: HTMLButtonElement`
+        Методы:
+            `deleteFromCart` - удалить из корзины
