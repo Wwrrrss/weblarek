@@ -198,9 +198,9 @@ IProduct
         `countElement: HTMLElement` - счетчик товаров в корзине
         `cartButton: HTMLButtonElement` - корзина
     Методы:
-        `setCounter(value: number)` - сеттер значения счетчика товаров
+        `set counter(value: number)` - сеттер значения счетчика товаров
 
-2. Класс Catalog
+2. Класс Gallery
     Поля:
         `main: HTMLElement` - главная страница с товарами
     Методы:
@@ -208,10 +208,10 @@ IProduct
 
 3. Класс Modal
     Поля:
-        `container: HTMLElement` - модальное окно
+        `modalElement: HTMLElement` - модальное окно
         `closeButton: HTMLButtonElement` - кнопка закрытия окна
     Методы:
-        `setContent(el: HTMLElement)` - добавление контента
+        `set content(el: HTMLElement)` - добавление контента
 
 
 Переиспользуемые сущности:
@@ -220,21 +220,20 @@ IProduct
 
 Родительский класс Form
     Поля:
-    Методы:
-        `fillForm` - заполнение
-        `isValid()` - валидация
-        `change(value)` - изменение значения поля
+        `buttonElement: HTMLButtonElement`
+
 
     Класс OrderForm
         Поля:
-            `paymentType: IPayment` - способ оплаты
-            `address: string` - адрес доставки
+            `cashPayment: HTMLButtonElement`
+            `cardPayment: HTMLButtonElement`
+            `addressElement: HTMLInputElement`
         Методы:
 
     Класс ContactsForm
         Поля:
-            `phone: string`
-            `email: string`
+            `phoneElement: HTMLInputElement`
+            `emailElement: HTMLInputElement`
         Методы:
 
 
@@ -242,31 +241,40 @@ IProduct
 
 Родительский класс Card
     Поля:
-        `title: string`
-        `price:`
+        `titleElement: HTMLElement`
+        `priceElement: HTMLElement`
     Методы:
+        `set title(name: string)`
+        `set price(price: number)`
 
 
-    Класс CardInCatalog 
+    Класс CardCatalog
         Поля:
-            `image: string`
-            `category: string`
+            `imageElement: HTMLImageElement`
+            `categoryElement: HTMLElement`
             `description: string`
         Методы:
-            `openModal()` - открытие модального окна
+            `set image(value: string)`
+            `set category(value: string)`
 
     Класс CardPreview
         Поля
-            `image: string`
-            `category: string`
-            `description: string`
-            `button: HTMLButtonElement`
+            `buttonElement: HTMLButtonElement`
+            `imageElement: HTMLImageElement`
+            `categoryElement: HTMLElement`
+            `descriptionElement: HTMLElement`
         Методы:
-            `addToCart()` - добавление товара в корзину
+            `set image(value: string)`
+            `set category(value: string)`
+            `set description(value: string)`
 
-    Класс CardInCart
+    Класс CardCart
         Поля:
-            `index`  ???
-            `button: HTMLButtonElement`
+            `indexElement: HTMLElement`
+            `buttonElement: HTMLButtonElement`
         Методы:
-            `deleteFromCart` - удалить из корзины
+            `set index(value: number)`
+
+
+События:
+    1. `basket:open` - закрытие модального окна
