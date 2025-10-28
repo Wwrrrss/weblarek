@@ -1,5 +1,8 @@
 import { Card } from "./card.ts";
 import { ensureElement } from "../../../utils/utils.ts";
+import { categoryMap } from "../../../utils/constants.ts";
+
+type categoryKey = keyof typeof categoryMap
 
 interface ICardActions {
     onClick: () => void
@@ -8,8 +11,6 @@ interface ICardActions {
 interface ICardCatalog {
     image: string
     category: string
-    title: string
-    price: number
 }
 
 export class CardCatalog extends Card<ICardCatalog> {
@@ -29,9 +30,17 @@ export class CardCatalog extends Card<ICardCatalog> {
 
     set image(value: string) {
         this.setImage(this.imageElement, value, this.title)
+        console.log()
     }
 
     set category(value: string) {
         this.categoryElement.textContent = value
+
+        for (const key in categoryMap) {
+            this.categoryElement.classList.toggle(
+                categoryMap[key as categoryKey], 
+                key === value
+            )
+        }
     }
 }

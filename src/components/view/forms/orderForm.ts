@@ -1,5 +1,6 @@
 import { TPayment } from "../../../types";
-import { ensureElement } from "../../../utils/utils.ts";
+import { ensureAllElements, ensureElement } from "../../../utils/utils.ts";
+import { IEvents } from "../../base/Events.ts";
 import { Form } from "./from.ts";
 
 interface IOrderForm {
@@ -7,31 +8,53 @@ interface IOrderForm {
     address: string
 }
 
-interface IFormActions {
-    cardClick: () => void
-    cashClick: () => void
-    onInput: (e: Event) => void
-}
-
 export class OrderForm extends Form<IOrderForm> {
-    cashPayment: HTMLButtonElement
-    cardPayment: HTMLButtonElement
+    cashPayment: HTMLButtonElement | null
+    cardPayment: HTMLButtonElement | null
     addressElement: HTMLInputElement
 
-    constructor (container: HTMLElement, actions?: IFormActions) {
+    constructor (container: HTMLElement, events: IEvents) {
         super(container)
 
         this.addressElement = ensureElement<HTMLInputElement>('.form__input', container)
-        this.cashPayment = ensureElement<HTMLButtonElement>('.', container)
-        this.cardPayment = ensureElement<HTMLButtonElement>('.', container)
+        const buttons = ensureAllElements<HTMLButtonElement>('.button_alt', container)
 
-        if (actions?.onInput) {
-            this.addressElement.addEventListener('input', actions.onInput)
-        }
+        this.cardPayment = buttons.find(button => button.getAttribute('name') === 'card') ?? null
 
-        if(actions?.cardClick && actions?.cashClick) {
-            this.cardPayment.addEventListener('click', actions.cardClick)
-            this.cashPayment.addEventListener('click', actions.cashClick)
+        this.cashPayment = buttons.find(button => button.getAttribute('name') === 'cash') ?? null
+
+        if (this.cardPayment) {
+            this.cardPayment.addEventListener('click', () => {
+                events.emit('form:changed', { payment: 'card' })
+            })
         }
+        if (this.cashPayment) {
+            this.cashPayment.addEventListener('click', () => {
+                events.emit('form:changed', { payment: 'cash'})
+            })
+        }
+        this.addressElement.addEventListener('input', (e) => {
+            const target = e.target as HTMLInputElement
+            events.emit('form:changed', {address: target.value})
+        })
+        container.addEventListener('submit', (e) => {
+            e.preventDefault()
+            events.emit('contacts:open')
+        })
+    }
+
+    set payment(payment: TPayment) {
+        if (payment === 'card') {
+            this.cardPayment?.classList.toggle('button_alt-active', true)
+            this.cashPayment?.classList.toggle('button_alt-active', false)
+        }
+        if (payment === 'cash') {
+            this.cashPayment?.classList.toggle('button_alt-active', true)
+            this.cardPayment?.classList.toggle('button_alt-active', false)
+        }
+    }
+
+    set address(value: string) {
+        this.addressElement.value = value
     }
 }

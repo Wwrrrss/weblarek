@@ -1,4 +1,5 @@
-import { ensureElement } from "../../../utils/utils.ts";
+import { ensureAllElements, ensureElement } from "../../../utils/utils.ts";
+import { IEvents } from "../../base/Events.ts";
 import { Form } from "./from.ts";
 
 interface IContactsForm {
@@ -6,32 +7,37 @@ interface IContactsForm {
     email: string
 }
 
-interface IFormActions {
-    phoneInputChange: (e: Event) => void
-    emailInputChange: (e: Event) => void
-}
-
 export class ContactsForm extends Form<IContactsForm> {
-    phoneElement: HTMLInputElement
-    emailElement: HTMLInputElement
+    phoneElement: HTMLInputElement | null
+    emailElement: HTMLInputElement | null
 
-    constructor(container: HTMLElement, actions?: IFormActions) {
+    constructor(container: HTMLElement, events: IEvents) {
         super(container)
 
-        this.phoneElement = ensureElement<HTMLInputElement>('.', container)
-        this.emailElement = ensureElement<HTMLInputElement>('.', container)
+        const inputs = ensureAllElements<HTMLInputElement>('.form__input', container)
+        this.phoneElement = inputs.find(input => input.getAttribute('name') === 'phone') ?? null
+        this.emailElement = inputs.find(input => input.getAttribute('name') === 'email') ?? null
 
-        if (actions?.phoneInputChange && actions?.emailInputChange) {
-            this.phoneElement.addEventListener('input', actions.phoneInputChange)
-            this.emailElement.addEventListener('input', actions.emailInputChange)
-        }
+        this.phoneElement?.addEventListener('input', (e) => {
+            const target = e.target as HTMLInputElement
+            events.emit('form:changed', {phone: target.value})
+        })
+        this.emailElement?.addEventListener('input', (e) => {
+            const target = e.target as HTMLInputElement
+            events.emit('form:changed', {email: target.value})
+        })
+
+        container.addEventListener('submit', (e) => {
+            e.preventDefault()
+            events.emit('buy')
+        })
     }
 
     set phone(phone: string) {
-        this.phoneElement.value = phone
+        if(this.phoneElement) this.phoneElement.value = phone
     }
 
     set email(email: string) {
-        this.emailElement.value = email
+        if (this.emailElement) this.emailElement.value = email
     }
 }

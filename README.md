@@ -142,7 +142,7 @@ IProduct
 
 ### Модели данных
 
-1. Класс Catalog
+1. Класс ProductsModel
 
 Каталог. Хранит массив всех товаров
 
@@ -212,6 +212,8 @@ IProduct
         `closeButton: HTMLButtonElement` - кнопка закрытия окна
     Методы:
         `set content(el: HTMLElement)` - добавление контента
+        `open()`
+        `close()`
 
 
 Переиспользуемые сущности:
@@ -277,4 +279,19 @@ IProduct
 
 
 События:
-    1. `basket:open` - закрытие модального окна
+    `basket:open` - клик по корзине
+    `catalog:changed` - изменение каталога
+    `card:select` - клик по карточке в каталоге (просмотр cardPreview)
+    `modal:close` - закрытие модального окна
+    `modal:open` - открытие модального окна
+    `basket:open` - клик по иконке корзины
+    `basket:changed` - изменение корзины
+    `order:open` - оформление заказа
+    `contacts:open` - клик по кнопке далее 
+    `form:changed` - изменение данных в форме
+    `orderData:changed` - изменение данные в orderForm
+    `contactsData:changed` - изменение данных в contactsForm
+    `buy` - успешный заказ
+
+#### Презентер
+В main.ts реализованны слушатели всех событий

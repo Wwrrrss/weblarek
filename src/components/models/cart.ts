@@ -1,10 +1,13 @@
 import { IProduct } from "../../types/index.ts";
+import { IEvents } from "../base/Events.ts";
 
 export class Cart {
     private products: IProduct[]
+    events: IEvents
 
-    constructor(products: IProduct[]) {
+    constructor(products: IProduct[], events: IEvents) {
         this.products = products
+        this.events = events
     }
 
     getCartList(): IProduct[] {
@@ -13,14 +16,17 @@ export class Cart {
 
     addProduct(product: IProduct) {
         this.products.push(product)
+        this.events.emit('basket:changed')
     }
 
-    removeProduct(id: string) {
-        this.products = this.products.filter(item => item.id !== id)
+    removeProduct(id: string) {  
+        this.products = this.products.filter(item => item.id !== id);
+        this.events.emit('basket:changed')
     }
 
     removeAll() {
         this.products = []
+        this.events.emit('basket:changed')
     }
 
     getTotalPrice() {

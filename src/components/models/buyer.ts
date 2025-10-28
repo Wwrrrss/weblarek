@@ -1,10 +1,13 @@
 import { IBuyer, IData } from "../../types/index.ts";
+import { IEvents } from "../base/Events.ts";
 
 export class Buyer {
     public buyerData: IBuyer
+    events: IEvents
 
-    constructor(buyerData: IBuyer) {
+    constructor(buyerData: IBuyer, events: IEvents) {
         this.buyerData = buyerData
+        this.events = events
     }
 
     saveData(newData: IData): void {
@@ -12,6 +15,12 @@ export class Buyer {
             ...this.buyerData,
             ...newData
         };
+        if(newData.address !== undefined || newData.payment) {
+            this.events.emit('orderData:changed')
+        }
+        if(newData.phone !== undefined || newData.email !== undefined) {
+            this.events.emit('contactsData:changed')
+        }
     }
 
     getData(): IBuyer {

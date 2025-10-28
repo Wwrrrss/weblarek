@@ -1,16 +1,18 @@
+import { categoryMap, CDN_URL } from "../../../utils/constants.ts";
 import { ensureElement } from "../../../utils/utils.ts";
 import { Card } from "./card.ts";
+
+type categoryKey = keyof typeof categoryMap
 
 interface ICardActions {
     onClick: () => void
 }
 
 interface ICardPreview {
-    title: string
-    price: number
     image: string
     category: string
     description: string
+    buttonText: string
 }
 
 export class CardPreview extends Card<ICardPreview> {
@@ -38,9 +40,19 @@ export class CardPreview extends Card<ICardPreview> {
 
     set category(value: string) {
         this.categoryElement.textContent = value
+        for (const key in categoryMap) {
+            this.categoryElement.classList.toggle(
+                categoryMap[key as categoryKey], 
+                key === value
+            )
+        }
     }
 
     set description(value: string) {
         this.descriptionElement.textContent = value
+    }
+
+    set buttonText(value: string) {
+        this.buttonElement.textContent = value
     }
 }

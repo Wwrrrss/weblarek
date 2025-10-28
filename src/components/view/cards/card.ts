@@ -6,21 +6,25 @@ interface ICard {
     price: number
 }
 
-export class Card<T extends ICard = ICard> extends Component<T> {
+export class Card<T> extends Component<ICard & T> {
     titleElement: HTMLElement
     priceElement: HTMLElement
 
     constructor(container: HTMLElement) {
         super(container)
-        this.titleElement = ensureElement<HTMLElement>('.card__title')
-        this.priceElement = ensureElement<HTMLElement>('.card__price')
+        this.titleElement = ensureElement<HTMLElement>('.card__title', container)
+        this.priceElement = ensureElement<HTMLElement>('.card__price', container)
     }
 
     set title(name: string) {
         this.titleElement.textContent = name
-    }
+    }   
 
     set price(price: number) {
-        this.priceElement.textContent = String(price)
+        if (!price) {
+            this.priceElement.textContent = 'Бесценно'
+        } else {
+            this.priceElement.textContent = `${price} синапсов`
+        }
     }
 }

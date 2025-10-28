@@ -6,8 +6,6 @@ interface ICardActions {
 }
 
 interface ICardCart {
-    title: string
-    price: number
     index: number
 }
 

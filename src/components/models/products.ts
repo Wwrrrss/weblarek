@@ -1,15 +1,19 @@
 import { IProduct } from "../../types/index.ts"
+import { IEvents } from "../base/Events.ts"
 
-export class Catalog {
+export class ProductsModel {
     private productList: IProduct[]
     selectedProduct: IProduct | null = null
+    events: IEvents
 
-    constructor(productList: IProduct[]) {
+    constructor(productList: IProduct[], events: IEvents) {
         this.productList = productList
+        this.events = events
     }
 
     setProducts(products: IProduct[]) {
         this.productList = products
+        this.events.emit('catalog:changed')
     }
 
     getProducts() {
