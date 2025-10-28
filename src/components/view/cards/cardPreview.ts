@@ -4,6 +4,11 @@ import { Card } from "./card.ts";
 
 type categoryKey = keyof typeof categoryMap
 
+type Button = {
+    text: string
+    active: boolean
+}
+
 interface ICardActions {
     onClick: () => void
 }
@@ -12,7 +17,7 @@ interface ICardPreview {
     image: string
     category: string
     description: string
-    buttonText: string
+    button: Button
 }
 
 export class CardPreview extends Card<ICardPreview> {
@@ -52,7 +57,8 @@ export class CardPreview extends Card<ICardPreview> {
         this.descriptionElement.textContent = value
     }
 
-    set buttonText(value: string) {
-        this.buttonElement.textContent = value
+    set button (value: Button) {
+        this.buttonElement.textContent = value.text
+        this.buttonElement.disabled = !value.active
     }
 }

@@ -27,8 +27,7 @@ export class Modal extends Component<IModal> {
     }
 
     set content(el: HTMLElement) {
-        while (this.modalElement.firstChild) this.modalElement.removeChild(this.modalElement.firstChild);
-        this.modalElement.appendChild(el)
+        this.modalElement.replaceChildren(el);
     }
 
     open() {

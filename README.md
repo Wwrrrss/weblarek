@@ -202,7 +202,7 @@ IProduct
 
 2. Класс Gallery
     Поля:
-        `main: HTMLElement` - главная страница с товарами
+        `galleryElement: HTMLElement` - главная страница с товарами
     Методы:
         `setCatalog(items: HTMLElement[])` - сеттер товаров
 
@@ -222,21 +222,28 @@ IProduct
 
 Родительский класс Form
     Поля:
-        `buttonElement: HTMLButtonElement`
-
+        `buttonElement: HTMLButtonElement` - кнопка далее
+        `errorsElement: HTMLElement` - элемент с ошибками
+    Методы:
+        `set submitButton(active: boolean)` - сетер кнопки
+        `set errors(value: string[])` - сетер ошибок
 
     Класс OrderForm
         Поля:
-            `cashPayment: HTMLButtonElement`
-            `cardPayment: HTMLButtonElement`
-            `addressElement: HTMLInputElement`
+            `cashPayment: HTMLButtonElement | null` - элемент оплаты при получении
+            `cardPayment: HTMLButtonElement | null` - элемент оплаты онлайн
+            `addressElement: HTMLInputElement` - инпут с адресом
         Методы:
+            `set payment(payment: TPayment)` - сетер способа оплаты
+            `set address(value: string)` - сетер адреса
 
     Класс ContactsForm
         Поля:
-            `phoneElement: HTMLInputElement`
-            `emailElement: HTMLInputElement`
+            `phoneElement: HTMLInputElement` - инпут с телефоном
+            `emailElement: HTMLInputElement` - инпут с почтой
         Методы:
+            `set phone(phone: string)` - сетер номера телефона
+            `set email(email: string)` - сетер почты
 
 
 2. Карточки товаров
@@ -254,7 +261,6 @@ IProduct
         Поля:
             `imageElement: HTMLImageElement`
             `categoryElement: HTMLElement`
-            `description: string`
         Методы:
             `set image(value: string)`
             `set category(value: string)`
@@ -269,6 +275,7 @@ IProduct
             `set image(value: string)`
             `set category(value: string)`
             `set description(value: string)`
+            `set button (value: Button)`
 
     Класс CardCart
         Поля:

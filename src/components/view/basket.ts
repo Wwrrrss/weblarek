@@ -8,25 +8,19 @@ interface IBasket {
     button: boolean
 }
 
-interface IBasketActions {
-    onClick: () => void
-}
-
 export class Basket extends Component<IBasket> {
     buttonElement: HTMLButtonElement
     priceElement: HTMLElement
     listElement: HTMLElement
 
-    constructor(container: HTMLElement, actions?: IBasketActions) {
+    constructor(container: HTMLElement, events: IEvents) {
         super(container)
 
         this.buttonElement = ensureElement<HTMLButtonElement>('.basket__button', container)
         this.priceElement = ensureElement<HTMLElement>('.basket__price', container)
         this.listElement = ensureElement<HTMLElement>('.basket__list', container)
 
-        if (actions?.onClick) {
-            this.buttonElement.addEventListener('click', actions.onClick)
-        }
+        this.buttonElement.addEventListener('click', () => events.emit('order:open'))
     }
 
     set list(list: HTMLElement[]) {

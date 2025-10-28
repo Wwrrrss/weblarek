@@ -1,7 +1,7 @@
 import { IBuyer, IData } from "../../types/index.ts";
 import { IEvents } from "../base/Events.ts";
 
-export class Buyer {
+export class BuyerModel {
     public buyerData: IBuyer
     events: IEvents
 
@@ -34,6 +34,8 @@ export class Buyer {
             email: '',
             phone: ''
         }
+        this.events.emit('contactsData:changed')
+        this.events.emit('orderData:changed')
     }
 
     isValid() {

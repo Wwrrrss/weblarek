@@ -1,7 +1,7 @@
 import { IProduct } from "../../types/index.ts";
 import { IEvents } from "../base/Events.ts";
 
-export class Cart {
+export class CartModel {
     private products: IProduct[]
     events: IEvents
 

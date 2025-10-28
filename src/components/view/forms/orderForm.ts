@@ -44,14 +44,8 @@ export class OrderForm extends Form<IOrderForm> {
     }
 
     set payment(payment: TPayment) {
-        if (payment === 'card') {
-            this.cardPayment?.classList.toggle('button_alt-active', true)
-            this.cashPayment?.classList.toggle('button_alt-active', false)
-        }
-        if (payment === 'cash') {
-            this.cashPayment?.classList.toggle('button_alt-active', true)
-            this.cardPayment?.classList.toggle('button_alt-active', false)
-        }
+        this.cardPayment?.classList.toggle('button_alt-active', payment === 'card')
+        this.cashPayment?.classList.toggle('button_alt-active', payment === 'cash')
     }
 
     set address(value: string) {

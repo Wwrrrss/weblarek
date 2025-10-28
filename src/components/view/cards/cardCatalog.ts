@@ -30,7 +30,6 @@ export class CardCatalog extends Card<ICardCatalog> {
 
     set image(value: string) {
         this.setImage(this.imageElement, value, this.title)
-        console.log()
     }
 
     set category(value: string) {

@@ -21,7 +21,6 @@ export class ProductsModel {
     }
 
     getProductById(id: string) {
-        console.log(this.productList)
         return this.productList.find(e => e.id === id)
     }
 
