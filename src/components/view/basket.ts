@@ -21,10 +21,13 @@ export class Basket extends Component<IBasket> {
         this.listElement = ensureElement<HTMLElement>('.basket__list', container)
 
         this.buttonElement.addEventListener('click', () => events.emit('order:open'))
+        
+        this.list = []
+        this.button = false
     }
 
     set list(list: HTMLElement[]) {
-        while (this.listElement.firstChild) this.listElement.removeChild(this.listElement.firstChild);
+        this.listElement.replaceChildren(...list)
         if (!list.length) {
             this.listElement.textContent = 'Корзина пуста'
         }

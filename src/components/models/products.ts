@@ -26,6 +26,7 @@ export class ProductsModel {
 
     selectProduct(id: string) {
         this.selectedProduct = this.productList.find(e => e.id === id) ?? null
+        this.events.emit('card:select')
     }
 
     getSelectedProduct() {

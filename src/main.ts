@@ -17,7 +17,6 @@ import { ContactsForm } from './components/view/forms/contactsForm.ts';
 import { Success } from './components/view/success.ts';
 
 import { cloneTemplate, ensureElement } from './utils/utils.ts';
-import { IProduct } from './types/index.ts';
 
 const events = new EventEmitter()
 const service = new Service();
@@ -33,21 +32,21 @@ const orderForm = new OrderForm(cloneTemplate<HTMLTemplateElement>('#order'), ev
 const contactsForm = new ContactsForm(cloneTemplate<HTMLTemplateElement>('#contacts'), events)
 const success = new Success(cloneTemplate<HTMLElement>('#success'), events)
 const basket = new Basket(cloneTemplate<HTMLTemplateElement>('#basket'), events)
+const cardPreview = new CardPreview(cloneTemplate<HTMLTemplateElement>('#card-preview'), {
+    onClick: () => {
+        const product = productsModel.getSelectedProduct()
+        if (!product) return
+        cartModel.hasProduct(product.id) ? cartModel.removeProduct(product.id) : cartModel.addProduct(product)
+    }
+})
 
 events.on('modal:open', () => modal.open())
 events.on('modal:close', () => modal.close())
 
-events.on('card:select', (item: IProduct) => {
+events.on('card:select', () => {
+    const item = productsModel.getSelectedProduct()
+    if (!item) return
     events.emit('modal:open')
-    const cardPreview = new CardPreview(cloneTemplate<HTMLTemplateElement>('#card-preview'), {
-        onClick: () => {
-            cartModel.hasProduct(item.id) ? cartModel.removeProduct(item.id) : cartModel.addProduct(item)
-            cardPreview.render({button: {
-                text: cartModel.hasProduct(item.id) ? "Удалить из корзины" : "В корзину",
-                active: !!item.price
-            }})
-        }
-    })
 
     return modal.render({
         content: cardPreview.render({
@@ -67,7 +66,7 @@ events.on('card:select', (item: IProduct) => {
 events.on('catalog:changed', () => {
     const itemCards = productsModel.getProducts().map((item) => {
         const card = new CardCatalog(cloneTemplate('#card-catalog'), {
-            onClick: () => events.emit('card:select', item)
+            onClick: () => productsModel.selectProduct(item.id)
         })
         return card.render({
             title: item.title,
@@ -85,8 +84,6 @@ events.on('basket:open', () => {
     modal.render({content: basket.render()})
 })
 
-basket.render({ list: [], button: false })
-
 events.on('basket:changed', () => {
     header.render({ counter: cartModel.getQuantity() })
     const items = cartModel.getCartList().map((item, index) => {
@@ -101,6 +98,13 @@ events.on('basket:changed', () => {
             index: index + 1
         })
     })
+    const product = productsModel.getSelectedProduct()
+    if (product) {
+        cardPreview.render({button: {
+            text: cartModel.hasProduct(product.id) ? "Удалить из корзины" : "В корзину",
+            active: !!product.price
+        }})
+    }
     basket.render({
         list: items,
         price: cartModel.getTotalPrice(),
@@ -147,13 +151,13 @@ events.on('contactsData:changed', () => {
 
 events.on('buy', () => {
     const ids = cartModel.getCartList().map(e => e.id)
-    service.post({...buyerModel.getData(), total: cartModel.getTotalPrice(), items: ids}).then(() => {
+    service.postOrderData({...buyerModel.getData(), total: cartModel.getTotalPrice(), items: ids}).then(() => {
         modal.render({
             content: success.render({price: cartModel.getTotalPrice()})
         })
         cartModel.removeAll()
         buyerModel.removeData()
-    })
+    }).catch((err) => console.log(err))
 })
 
 service.getProducts().then((data) => {

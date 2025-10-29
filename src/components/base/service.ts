@@ -19,7 +19,7 @@ export class Service {
         }));
     }
 
-    async post (data: IOrder) {
+    async postOrderData (data: IOrder) {
         await this.api.post('/order/', data)
     }
 }

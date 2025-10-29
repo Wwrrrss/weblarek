@@ -215,6 +215,22 @@ IProduct
         `open()`
         `close()`
 
+4. Класс Basket 
+    Поля:
+        `buttonElement: HTMLButtonElement` - кнопка оформить
+        `priceElement: HTMLElement`
+        `listElement: HTMLElement`
+    Методы:
+        `set list(list: HTMLElement[])`
+        `set price(price: number)`
+        `set button(active: boolean)`
+
+5. Класс Success
+    Поля:
+        `buttonElement: HTMLButtonElement`
+        `priceElement: HTMLElement`
+    Методы:
+        `set price(price: number)`
 
 Переиспользуемые сущности:
 
@@ -286,11 +302,10 @@ IProduct
 
 
 События:
-    `basket:open` - клик по корзине
-    `catalog:changed` - изменение каталога
-    `card:select` - клик по карточке в каталоге (просмотр cardPreview)
     `modal:close` - закрытие модального окна
     `modal:open` - открытие модального окна
+    `catalog:changed` - изменение каталога
+    `card:select` - клик по карточке в каталоге (просмотр cardPreview)
     `basket:open` - клик по иконке корзины
     `basket:changed` - изменение корзины
     `order:open` - оформление заказа
